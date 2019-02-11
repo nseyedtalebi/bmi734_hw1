@@ -3,10 +3,6 @@
   (:import (org.opencv.core Mat Core CvType)
            (org.opencv.imgproc Imgproc)
            (org.opencv.imgcodecs Imgcodecs)))
-(defn -main []
-  (write-cleaned-image)
-  (write-segmented-image)
-  )
 
 (defn write-cleaned-image []
                                (let [embryos (Imgcodecs/imread "resources/embryos.jpg")
@@ -47,3 +43,8 @@
         )
       )
     )
+
+(defn -main []
+  (write-cleaned-image)
+  (write-segmented-image)
+  )
