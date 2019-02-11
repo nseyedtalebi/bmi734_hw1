@@ -1,6 +1,7 @@
 (ns bmi734-hw1.problem-2
 (:gen-class)
-  (:import (org.opencv.core Mat Core)
+  (:require [bmi734-hw1.OpenCVHelpers :as OpenCVHelpers])
+  (:import (org.opencv.core Mat Core CvType Scalar)
            (org.opencv.imgcodecs Imgcodecs)
            (org.opencv.imgproc Imgproc)
           ))
@@ -8,8 +9,19 @@
                                (def mri-brain (Imgcodecs/imread "resources/mri_brain.jpg"))
                                (def mri-brain-segmented (Mat.))
                                (Imgproc/Canny mri-brain mri-brain-segmented 75 200)
-                               (Imgcodecs/imwrite "mri-brain-segd.jpg" mri-brain-segmented)
-                               ))
+                               (let [imsize (.size mri-brain-segmented)
+                                     b (Mat. imsize CvType/CV_8U)
+                                     g (Mat. imsize CvType/CV_8U)
+                                     r (Mat. imsize CvType/CV_8U)
+                                     zeros  (Mat/zeros imsize CvType/CV_8U)
+                                     overlay (Mat.)
+                                     output (Mat.)
+                                     normaled (Mat.)]
+                                 (Core/merge [zeros zeros mri-brain-segmented] overlay)
+                                 (Core/scaleAdd overlay 255 mri-brain output)
+                                 (OpenCVHelpers/display-mat output)
+                                 )
+                               )
 (defn generate-test-images [input-filename output-filename]
     (let [input-image (Imgcodecs/imread input-filename)
          ;steps (range 4096 65536 (/ 65536 16))
@@ -27,12 +39,3 @@
          )
     )
 )
-
-;TODO create new 3-channel image by using colorspace conversion to RBG
-;After that, set blue and green channels to zero
-;Then add that new image to the input to overlay
-(def mri-brain (Imgcodecs/imread "resources/mri_brain.jpg"))
-(def mri-brain-segmented (Mat.))
-(Imgproc/Canny mri-brain mri-brain-segmented 75 200)
-(def mri-brain-seg-c (Mat.))
-(Imgproc/cvtColor mri-brain-segmented mri-brain-seg-c Imgproc/COLOR_GRAY2BGR)

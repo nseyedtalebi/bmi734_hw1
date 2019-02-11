@@ -7,7 +7,7 @@
 (defn display-mat [mat]
   ;OpenCV's HighGUI doesn't work very well so I adapted this nice example:
   ;http://answers.opencv.org/question/8119/how-to-display-image-on-java-release/
-  (let [frame (HighGui/createJFrame "display-img-2" HighGui/WINDOW_AUTOSIZE)
+  (let [frame (HighGui/createJFrame (:name (meta mat)) HighGui/WINDOW_AUTOSIZE)
         buffered-img (HighGui/toBufferedImage mat)
         icon (ImageIcon. buffered-img)
         h (+ 50 (.getHeight buffered-img nil))
