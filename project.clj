@@ -7,6 +7,6 @@
                  [opencv/opencv "4.0.1"]
                  [opencv/opencv-native "4.0.1"]]
   :injections [(clojure.lang.RT/loadLibrary org.opencv.core.Core/NATIVE_LIBRARY_NAME)]
-  :main bmi734-hw1.core
+  :main bmi734-hw1.problem-1
   )
 
